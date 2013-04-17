@@ -1,0 +1,248 @@
+allprojects {
+	repositories {
+		mavenCentral()
+	}
+}
+
+def mod_web = 'cavani.endorfina-hydrogen.web-v1.0'
+def mod_service = 'cavani.endorfina-hydrogen.service-v1.0'
+def mod_dashboard = 'cavani.endorfina-hydrogen.dashboard-v1.0'
+def mod_engine = 'cavani.endorfina-hydrogen.engine-v1.0'
+
+subprojects {
+	apply plugin: 'java'
+	apply plugin: 'eclipse'
+
+	sourceCompatibility = 1.7
+	version = '1.0'
+
+	configurations {
+		provided
+	}
+	
+	sourceSets {
+		main {
+			compileClasspath += configurations.provided
+		}
+		test {
+			compileClasspath += configurations.provided
+		}
+	}
+
+	eclipse {
+		classpath { plusConfigurations += configurations.provided }
+	}
+	
+	dependencies {
+		testCompile 'junit:junit:4.11'
+	}
+
+	test {
+		testLogging {
+			events "started", "passed", "skipped", "failed", "standardOut", "standardError"
+			exceptionFormat "full"
+		}
+	}
+}
+
+
+project(':hydrogen.persistence') {
+	dependencies {
+		provided 'org.vert-x:vertx-lang-java:1.3.1.final'
+		testCompile 'org.vert-x:vertx-testframework:1.3.1.final'
+	}
+}
+
+project(':hydrogen.web') {
+	apply plugin: 'war'
+	apply plugin: 'eclipse-wtp'
+	
+	dependencies {
+		provided 'org.vert-x:vertx-lang-java:1.3.1.final'
+		testCompile 'org.vert-x:vertx-testframework:1.3.1.final'
+	}
+	task deploy(type: Copy) {
+	    into "../mods/$mod_web"
+	    with jar
+	}
+}
+
+project(':hydrogen.service') {
+	dependencies {
+		compile project(':hydrogen.persistence')
+		provided 'org.vert-x:vertx-lang-java:1.3.1.final'
+		testCompile 'org.vert-x:vertx-testframework:1.3.1.final'
+	}
+	task deploy(dependsOn: 'classes') {
+		copy {
+		    into "../mods/$mod_service"
+		    with jar
+		}
+		copy {
+		    into "../mods/$mod_service/lib"
+			from configurations.compile
+		}
+	}
+}
+
+project(':hydrogen.dashboard') {
+	apply plugin: 'war'
+	apply plugin: 'eclipse-wtp'
+	
+	dependencies {
+		provided 'org.vert-x:vertx-lang-java:1.3.1.final'
+		testCompile 'org.vert-x:vertx-testframework:1.3.1.final'
+	}
+	task deploy(type: Copy) {
+	    into "../mods/$mod_dashboard"
+	    with jar
+	}
+}
+
+project(':hydrogen.engine') {
+	dependencies {
+		compile project(':hydrogen.persistence')
+		provided 'org.vert-x:vertx-lang-java:1.3.1.final'
+		testCompile 'org.vert-x:vertx-testframework:1.3.1.final'
+	}
+	task deploy(dependsOn: 'classes') {
+		copy {
+			into "../mods/$mod_engine"
+			with jar
+		}
+		copy {
+			into "../mods/$mod_engine/lib"
+			from configurations.compile
+		}
+	}
+}
+
+project(':hydrogen.tools') {
+	dependencies {
+		compile project(':hydrogen.persistence')
+		provided 'org.vert-x:vertx-lang-java:1.3.1.final'
+	}
+}
+
+task deploy(dependsOn: [
+	':hydrogen.web:deploy',
+	':hydrogen.service:deploy',
+	':hydrogen.dashboard:deploy',
+	':hydrogen.engine:deploy',
+	]);
+
+/*
+task deployCleanUp() {
+	file("mods/$mod_web").deleteDir()
+	file("mods/$mod_service").deleteDir()
+	file("mods/$mod_dashboard").deleteDir()
+	file("mods/$mod_engine").deleteDir()
+}
+*/
+
+//
+// MongoDB
+// 
+// mongoDbStart - inicia 3 instâncias do MongoDB
+// mongoDbStop - termina as 3 instâncias do MongoDB
+// mongoDbReplicaSet - configura as três instâncias como um cluster
+//                     uma instância primária e duas secundárias
+// mongoDbCleanUp - remove os arquivos gerados pelo mongodb
+//
+
+task mongoDb0Start(type: Exec) {
+	commandLine 'mongod',
+		'--fork',
+		'--logpath', 'data/0.log',
+		'--logappend',
+		'--bind_ip', '127.0.0.1',
+		'--port', '27017',
+		'--replSet', 'hydrogen',
+		'--dbpath', 'data/0',
+		'--smallfiles',
+		'--oplogSize', '10'
+}
+
+task mongoDb0Stop(type: Exec) {
+	commandLine 'mongo',
+		'127.0.0.1:27017/admin',
+		'data/shutdown.js'
+}
+
+task mongoDb1Start(type: Exec) {
+	commandLine 'mongod',
+		'--fork',
+		'--logpath', 'data/1.log',
+		'--logappend',
+		'--bind_ip', '127.0.0.1',
+		'--port', '27018',
+		'--replSet', 'hydrogen',
+		'--dbpath', 'data/1',
+		'--smallfiles',
+		'--oplogSize', '10'
+}
+
+task mongoDb1Stop(type: Exec) {
+	commandLine 'mongo',
+		'127.0.0.1:27018/admin',
+		'data/shutdown.js'
+}
+
+task mongoDb2Start(type: Exec) {
+	commandLine 'mongod',
+		'--fork',
+		'--logpath', 'data/2.log',
+		'--logappend',
+		'--bind_ip', '127.0.0.1',
+		'--port', '27019',
+		'--replSet', 'hydrogen',
+		'--dbpath', 'data/2',
+		'--smallfiles',
+		'--oplogSize', '10'
+}
+
+task mongoDb2Stop(type: Exec) {
+	commandLine 'mongo',
+		'127.0.0.1:27019/admin',
+		'data/shutdown.js'
+}
+
+task mongoDbReplicaSet(type: Exec) {
+	commandLine 'mongo',
+		'127.0.0.1:27017/admin',
+		'data/replicaset.js'
+}
+
+/*
+task mongoDbCleanUp() {
+	def cleaner = { i ->
+		if (i.isHidden())
+			return
+		def list = []
+		if (i.isDirectory())
+			i.deleteDir()
+		else
+			i.delete()
+	}
+	
+	file('data/0/').eachFile(cleaner) 
+	file('data/1/').eachFile(cleaner) 
+	file('data/2/').eachFile(cleaner) 
+	file('data/0.log').delete() 
+	file('data/1.log').delete() 
+	file('data/2.log').delete() 
+}
+*/
+
+task mongoDbStart(dependsOn: [mongoDb2Start, mongoDb1Start, mongoDb0Start]);
+
+task mongoDbStop(dependsOn: [mongoDb0Stop, mongoDb1Stop, mongoDb2Stop]);
+
+task setup(type: Exec, dependsOn: [':hydrogen.tools:assemble']) {
+	def proj = subprojects.find{ it.name == 'hydrogen.tools' }
+	def jars = proj.configurations.compile*.toString().join(':')
+
+	commandLine 'vertx',
+		'run', 'hydrogen.tools/src/main/java/cavani/endorfina/hydrogen/tools/Setup.java',
+		'-cp', jars
+}

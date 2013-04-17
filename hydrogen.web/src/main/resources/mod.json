@@ -1,0 +1,4 @@
+{
+	"main": "cavani.endorfina.hydrogen.web.Server",
+	"preserve-cwd": true
+}

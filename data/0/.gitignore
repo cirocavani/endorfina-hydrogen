@@ -1,0 +1,4 @@
+default_db.*
+local.*
+mongod.lock
+journal/*

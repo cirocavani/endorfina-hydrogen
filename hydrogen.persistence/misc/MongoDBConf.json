@@ -1,0 +1,12 @@
+{
+	"mongoDbModule": "vertx.mongo-persistor-v1.2.1",
+	"mongoDbInstances": 10,
+	"mongoDbAddress": "vertx.mongopersistor",
+	"mongoDbHost": "127.0.0.1",
+	"mongoDbPort": 27017,
+	"mongoDbDatabase": "default_db",
+	"mongoDbSecondary": false,
+	"mongoDbAuth": false,
+	"mongoDbUsername": "mongouser",
+	"mongoDbPassword": "secret"
+}

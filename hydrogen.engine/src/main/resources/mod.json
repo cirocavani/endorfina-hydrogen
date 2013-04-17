@@ -1,0 +1,4 @@
+{
+	"main": "cavani.endorfina.hydrogen.engine.EngineModule",
+	"worker": true
+}

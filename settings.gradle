@@ -1,0 +1,1 @@
+include 'hydrogen.persistence', 'hydrogen.web', 'hydrogen.service', 'hydrogen.dashboard', 'hydrogen.engine', 'hydrogen.tools'

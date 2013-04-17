@@ -1,0 +1,4 @@
+{
+	"main": "cavani.endorfina.hydrogen.dashboard.Server",
+	"preserve-cwd": true
+}

@@ -1,0 +1,4 @@
+{
+	"main": "cavani.endorfina.hydrogen.service.ServiceModule",
+	"worker": true
+}
