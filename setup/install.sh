@@ -8,8 +8,8 @@ tar xzf setup/jdk-7u21-linux-x64.tar.gz --directory=setup/
 
 echo 'MongoDB...'
 
-wget http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-2.4.1.tgz -P setup/
-tar xzf setup/mongodb-linux-x86_64-2.4.1.tgz --directory=setup/
+wget http://fastdl.mongodb.org/linux/mongodb-linux-x86_64-2.4.2.tgz -P setup/
+tar xzf setup/mongodb-linux-x86_64-2.4.2.tgz --directory=setup/
 
 echo 'Vert.x...'
 

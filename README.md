@@ -160,8 +160,8 @@ Initial Setup (Terminal):
 	> Java HotSpot(TM) 64-Bit Server VM (build 23.21-b01, mixed mode)
 	
 	mongod --version
-	> db version v2.4.1
-	> Tue Apr 16 15:05:10.164 git version: 1560959e9ce11a693be8b4d0d160d633eee75110
+	> db version v2.4.2
+	> Thu Apr 18 00:48:07.974 git version: 3e52c1a73c08eba7abdcb2c93e08205111976f07
 	
 	vertx version
 	> vert.x-1.3.1.final
