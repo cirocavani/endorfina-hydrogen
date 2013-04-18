@@ -4,10 +4,10 @@ allprojects {
 	}
 }
 
-def mod_web = 'cavani.endorfina-hydrogen.web-v1.0'
-def mod_service = 'cavani.endorfina-hydrogen.service-v1.0'
-def mod_dashboard = 'cavani.endorfina-hydrogen.dashboard-v1.0'
-def mod_engine = 'cavani.endorfina-hydrogen.engine-v1.0'
+def mod_server = 'cavani.endorfina.hydrogen.server-v1.0'
+def mod_service = 'cavani.endorfina.hydrogen.service-v1.0'
+def mod_dashboard = 'cavani.endorfina.hydrogen.dashboard-v1.0'
+def mod_engine = 'cavani.endorfina.hydrogen.engine-v1.0'
 
 subprojects {
 	apply plugin: 'java'
@@ -53,7 +53,7 @@ project(':hydrogen.persistence') {
 	}
 }
 
-project(':hydrogen.web') {
+project(':hydrogen.server') {
 	apply plugin: 'war'
 	apply plugin: 'eclipse-wtp'
 	
@@ -62,7 +62,7 @@ project(':hydrogen.web') {
 		testCompile 'org.vert-x:vertx-testframework:1.3.1.final'
 	}
 	task deploy(type: Copy) {
-	    into "../mods/$mod_web"
+	    into "../mods/$mod_server"
 	    with jar
 	}
 }
@@ -125,7 +125,7 @@ project(':hydrogen.tools') {
 }
 
 task deploy(dependsOn: [
-	':hydrogen.web:deploy',
+	':hydrogen.server:deploy',
 	':hydrogen.service:deploy',
 	':hydrogen.dashboard:deploy',
 	':hydrogen.engine:deploy',
@@ -133,7 +133,7 @@ task deploy(dependsOn: [
 
 /*
 task deployCleanUp() {
-	file("mods/$mod_web").deleteDir()
+	file("mods/$mod_server").deleteDir()
 	file("mods/$mod_service").deleteDir()
 	file("mods/$mod_dashboard").deleteDir()
 	file("mods/$mod_engine").deleteDir()

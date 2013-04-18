@@ -28,9 +28,9 @@ First Execution:
 	(wait for MongoDB syncs)
 	gradle setup
 	
-	./web.sh
+	./server.sh
 	(http://127.0.0.1:8080/)
-	(web.pid, logs/web.log)
+	(server.pid, logs/server.log)
 	
 	./dash.sh
 	(http://127.0.0.1:8180/)
@@ -38,7 +38,7 @@ First Execution:
 	
 	(... see usage bellow)
 	
-	kill `cat web.pid`
+	kill `cat server.pid`
 	kill `cat dash.pid`
 	
 	gradle mongoDbStop
@@ -53,9 +53,9 @@ Next execution:
 	
 	gradle mongoDbStart
 	
-	./web.sh
+	./server.sh
 	(http://127.0.0.1:8080/)
-	(web.pid, logs/web.log)
+	(server.pid, logs/server.log)
 	
 	./dash.sh
 	(http://127.0.0.1:8180/)
@@ -94,7 +94,7 @@ Usage:
 	(Track User 1 taking Item 2)
 	curl http://127.0.0.1:8080/track/1/2
 	> {"1":100,"2":0}
-
+	
 	curl http://127.0.0.1:8180/total/1
 	> 2
 	
@@ -111,18 +111,6 @@ Usage:
 	
 	Reset database:
 	gradle setup
-
-Running tests:
-
-	(pwd = repo root)
-	gradle clean test
-	
-	(Reports)
-	hydrogen.web/build/reports/tests/index.html
-	hydrogen.dashboard/build/reports/tests/index.html
-	hydrogen.service/build/reports/tests/index.html
-	hydrogen.engine/build/reports/tests/index.html
-	hydrogen.persistence/build/reports/tests/index.html
 
 
 Development
@@ -200,23 +188,23 @@ Outcome:
 	mods/vertx.mongo-persistor-v1.2.1/org/vertx/mods/*.class
 	mods/vertx.mongo-persistor-v1.2.1/lib/mongo-java-driver-2.9.2.jar
 	
-	(cavani.endorfina-hydrogen.service-v1.0)
-	mods/cavani.endorfina-hydrogen.service-v1.0/mod.json
-	mods/cavani.endorfina-hydrogen.service-v1.0/<package>/*.class
-	mods/cavani.endorfina-hydrogen.service-v1.0/lib/hydrogen.persistence-1.0.jar
+	(cavani.endorfina.hydrogen.service-v1.0)
+	mods/cavani.endorfina.hydrogen.service-v1.0/mod.json
+	mods/cavani.endorfina.hydrogen.service-v1.0/<package>/*.class
+	mods/cavani.endorfina.hydrogen.service-v1.0/lib/hydrogen.persistence-1.0.jar
 	
-	(cavani.endorfina-hydrogen.engine-v1.0)
-	mods/cavani.endorfina-hydrogen.engine-v1.0/mod.json
-	mods/cavani.endorfina-hydrogen.engine-v1.0/<package>/*.class
-	mods/cavani.endorfina-hydrogen.engine-v1.0/lib/hydrogen.persistence-1.0.jar
+	(cavani.endorfina.hydrogen.engine-v1.0)
+	mods/cavani.endorfina.hydrogen.engine-v1.0/mod.json
+	mods/cavani.endorfina.hydrogen.engine-v1.0/<package>/*.class
+	mods/cavani.endorfina.hydrogen.engine-v1.0/lib/hydrogen.persistence-1.0.jar
 	
-	(cavani.endorfina-hydrogen.web-v1.0)
-	mods/cavani.endorfina-hydrogen.web-v1.0/mod.json
-	mods/cavani.endorfina-hydrogen.web-v1.0/<package>/*.class
+	(cavani.endorfina.hydrogen.server-v1.0)
+	mods/cavani.endorfina.hydrogen.server-v1.0/mod.json
+	mods/cavani.endorfina.hydrogen.server-v1.0/<package>/*.class
 	
-	(cavani.endorfina-hydrogen.dashboard-v1.0)
-	mods/cavani.endorfina-hydrogen.dashboard-v1.0/mod.json
-	mods/cavani.endorfina-hydrogen.dashboard-v1.0/<package>/*.class
+	(cavani.endorfina.hydrogen.dashboard-v1.0)
+	mods/cavani.endorfina.hydrogen.dashboard-v1.0/mod.json
+	mods/cavani.endorfina.hydrogen.dashboard-v1.0/<package>/*.class
 
 
 **MongoDB**
@@ -246,28 +234,28 @@ Cluster:
 
 **Applications**
 
-Two applications: Tracker (web) and Visualization (dashboard)
+Two applications: Web API (server) and Visualization (dashboard)
 
-(Application Web)
+(Application Server)
 
 Application Management:
 
-* `web.sh`: start application, background, create `web.pid` e `web.log`
-* ``kill `cat web.pid` ``: end application 
-* `tail -f logs/web.log`: show application output
+* `server.sh`: start application, background, create `server.pid` e `server.log`
+* ``kill `cat server.pid` ``: end application
+* `tail -f logs/server.log`: show application output
 
 Modules:
 
-* `cavani.endorfina-hydrogen.web-v1.0`: HTTP Server (static files) and service routing (URL, parameters parsing, forward requests)
-* `cavani.endorfina-hydrogen.service-v1.0`: Tracker service, update primary persistence, read from secondary persistence
+* `cavani.endorfina.hydrogen.server-v1.0`: HTTP Server (static files) and service routing (URL, parameters parsing, forward requests)
+* `cavani.endorfina.hydrogen.service-v1.0`: Tracker service, update primary persistence, read from secondary persistence
 * `vertx.mongo-persistor-v1.2.1`: persistence service for MongoDB
 
-Configuration `hydrogen.web/conf/web.conf`:
+Configuration `hydrogen.server/conf/server.conf`:
 
 	{
 	  "host": "127.0.0.1",
 	  "port": 8080,
-	  "webRoot": "hydrogen.web/src/main/webapp/",
+	  "webRoot": "hydrogen.server/src/main/webapp/",
 	  "rootFile": "index.html",
 	  "serviceConf": {
 	    "persistenceType": "MongoDB",
@@ -298,7 +286,7 @@ Configuration `hydrogen.web/conf/web.conf`:
 	  }
 	}
 
-Static files folder `hydrogen.web/src/main/webapp`:
+Static files folder `hydrogen.server/src/main/webapp`:
 
 * `index.html`: page for item selection
 * `js/script.js`: server communication, XmlHttpRequest/GET
@@ -316,8 +304,8 @@ Application Management:
 
 Modules:
 
-* `cavani.endorfina-hydrogen.dashboard-v1.0`: HTTP Server (static files) and service routing (URL, parameters parsing, forward requests)
-* `cavani.endorfina-hydrogen.engine-v1.0`: Data services, read from secondary persistence
+* `cavani.endorfina.hydrogen.dashboard-v1.0`: HTTP Server (static files) and service routing (URL, parameters parsing, forward requests)
+* `cavani.endorfina.hydrogen.engine-v1.0`: Data services, read from secondary persistence
 * `vertx.mongo-persistor-v1.2.1`: persistence service for MongoDB
 
 Configuration `hydrogen.dashboard/conf/dash.conf`:
@@ -352,3 +340,17 @@ Static files folder `hydrogen.dashboard/src/main/webapp`:
 * `css/style.css`: HTML style
 * `img/*`: images
 
+
+**Tests**
+
+Running:
+
+	(pwd = repo root)
+	gradle clean test
+	
+	(Reports)
+	hydrogen.server/build/reports/tests/index.html
+	hydrogen.dashboard/build/reports/tests/index.html
+	hydrogen.service/build/reports/tests/index.html
+	hydrogen.engine/build/reports/tests/index.html
+	hydrogen.persistence/build/reports/tests/index.html

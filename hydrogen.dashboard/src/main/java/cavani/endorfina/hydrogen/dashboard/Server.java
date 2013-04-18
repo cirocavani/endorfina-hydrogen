@@ -21,7 +21,7 @@ import cavani.endorfina.hydrogen.dashboard.service.ServiceRegistry;
 public class Server extends BusModBase
 {
 
-	private static final String DEFAULT_ENGINE_MODULE = "cavani.endorfina-hydrogen.engine-v1.0";
+	private static final String DEFAULT_ENGINE_MODULE = "cavani.endorfina.hydrogen.engine-v1.0";
 
 	private static final JsonObject DEFAULT_ENGINE_CONF = new JsonObject();
 
