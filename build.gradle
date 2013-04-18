@@ -153,7 +153,7 @@ task deployCleanUp() {
 task mongoDb0Start(type: Exec) {
 	commandLine 'mongod',
 		'--fork',
-		'--logpath', 'data/0.log',
+		'--logpath', 'logs/mongod-0.log',
 		'--logappend',
 		'--bind_ip', '127.0.0.1',
 		'--port', '27017',
@@ -172,7 +172,7 @@ task mongoDb0Stop(type: Exec) {
 task mongoDb1Start(type: Exec) {
 	commandLine 'mongod',
 		'--fork',
-		'--logpath', 'data/1.log',
+		'--logpath', 'logs/mongod-1.log',
 		'--logappend',
 		'--bind_ip', '127.0.0.1',
 		'--port', '27018',
@@ -191,7 +191,7 @@ task mongoDb1Stop(type: Exec) {
 task mongoDb2Start(type: Exec) {
 	commandLine 'mongod',
 		'--fork',
-		'--logpath', 'data/2.log',
+		'--logpath', 'logs/mongod-2.log',
 		'--logappend',
 		'--bind_ip', '127.0.0.1',
 		'--port', '27019',
@@ -228,9 +228,6 @@ task mongoDbCleanUp() {
 	file('data/0/').eachFile(cleaner) 
 	file('data/1/').eachFile(cleaner) 
 	file('data/2/').eachFile(cleaner) 
-	file('data/0.log').delete() 
-	file('data/1.log').delete() 
-	file('data/2.log').delete() 
 }
 */
 

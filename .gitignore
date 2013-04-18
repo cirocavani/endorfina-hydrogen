@@ -1,7 +1,5 @@
 .gradle
 /local
 /mods
-/web.log
 /web.pid
-/dash.log
 /dash.pid
