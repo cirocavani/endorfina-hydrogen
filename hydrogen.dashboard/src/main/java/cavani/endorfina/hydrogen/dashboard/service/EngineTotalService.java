@@ -8,6 +8,8 @@ import java.util.Map;
 
 import org.vertx.java.core.json.JsonObject;
 
+import cavani.endorfina.hydrogen.network.http.ServiceAdapter;
+
 public class EngineTotalService implements ServiceAdapter
 {
 

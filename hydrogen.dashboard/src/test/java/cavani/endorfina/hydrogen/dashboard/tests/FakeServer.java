@@ -1,8 +1,8 @@
 package cavani.endorfina.hydrogen.dashboard.tests;
 
-import static cavani.endorfina.hydrogen.dashboard.service.ServiceRegistry.ENGINE_DATA_TOTALHOUR_ADDRESS;
-import static cavani.endorfina.hydrogen.dashboard.service.ServiceRegistry.ENGINE_DATA_TOTALITEM_ADDRESS;
-import static cavani.endorfina.hydrogen.dashboard.service.ServiceRegistry.ENGINE_DATA_TOTAL_ADDRESS;
+import static cavani.endorfina.hydrogen.dashboard.service.ServiceFactory.ENGINE_DATA_TOTALHOUR_ADDRESS;
+import static cavani.endorfina.hydrogen.dashboard.service.ServiceFactory.ENGINE_DATA_TOTALITEM_ADDRESS;
+import static cavani.endorfina.hydrogen.dashboard.service.ServiceFactory.ENGINE_DATA_TOTAL_ADDRESS;
 import static cavani.endorfina.hydrogen.dashboard.tests.IntegrationTest.ITEM;
 import static cavani.endorfina.hydrogen.dashboard.tests.IntegrationTest.TOTAL;
 import static cavani.endorfina.hydrogen.dashboard.tests.IntegrationTest.TOTAL_HOUR;
@@ -74,7 +74,8 @@ public class FakeServer extends Server
 			@Override
 			public void handle(final Message<JsonObject> message)
 			{
-				if (test("TotalItem.userId", USER_ID, message.body.getString(Constants.PARAM_ID)) && test("TotalItem.item", ITEM, message.body.getString(Constants.PARAM_ITEM)))
+				if (test("TotalItem.userId", USER_ID, message.body.getString(Constants.PARAM_ID))
+					&& test("TotalItem.item", ITEM, message.body.getString(Constants.PARAM_ITEM)))
 				{
 					message.reply(new JsonObject().putNumber("result", TOTAL_ITEM));
 				}

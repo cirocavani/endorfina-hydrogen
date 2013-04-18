@@ -8,6 +8,8 @@ def mod_server = 'cavani.endorfina.hydrogen.server-v1.0'
 def mod_service = 'cavani.endorfina.hydrogen.service-v1.0'
 def mod_dashboard = 'cavani.endorfina.hydrogen.dashboard-v1.0'
 def mod_engine = 'cavani.endorfina.hydrogen.engine-v1.0'
+def mod_persistence = 'cavani.endorfina.hydrogen.persistence-v1.0'
+def mod_network = 'cavani.endorfina.hydrogen.network-v1.0'
 
 subprojects {
 	apply plugin: 'java'
@@ -51,6 +53,21 @@ project(':hydrogen.persistence') {
 		provided 'org.vert-x:vertx-lang-java:1.3.1.final'
 		testCompile 'org.vert-x:vertx-testframework:1.3.1.final'
 	}
+	task deploy(type: Copy) {
+	    into "../mods/$mod_persistence"
+	    with jar
+	}
+}
+
+project(':hydrogen.network') {
+	dependencies {
+		provided 'org.vert-x:vertx-lang-java:1.3.1.final'
+		testCompile 'org.vert-x:vertx-testframework:1.3.1.final'
+	}
+	task deploy(type: Copy) {
+	    into "../mods/$mod_network"
+	    with jar
+	}
 }
 
 project(':hydrogen.server') {
@@ -58,6 +75,7 @@ project(':hydrogen.server') {
 	apply plugin: 'eclipse-wtp'
 	
 	dependencies {
+		compile project(':hydrogen.network')
 		provided 'org.vert-x:vertx-lang-java:1.3.1.final'
 		testCompile 'org.vert-x:vertx-testframework:1.3.1.final'
 	}
@@ -73,15 +91,9 @@ project(':hydrogen.service') {
 		provided 'org.vert-x:vertx-lang-java:1.3.1.final'
 		testCompile 'org.vert-x:vertx-testframework:1.3.1.final'
 	}
-	task deploy(dependsOn: 'classes') {
-		copy {
-		    into "../mods/$mod_service"
-		    with jar
-		}
-		copy {
-		    into "../mods/$mod_service/lib"
-			from configurations.compile
-		}
+	task deploy(type: Copy) {
+	    into "../mods/$mod_service"
+	    with jar
 	}
 }
 
@@ -90,6 +102,7 @@ project(':hydrogen.dashboard') {
 	apply plugin: 'eclipse-wtp'
 	
 	dependencies {
+		compile project(':hydrogen.network')
 		provided 'org.vert-x:vertx-lang-java:1.3.1.final'
 		testCompile 'org.vert-x:vertx-testframework:1.3.1.final'
 	}
@@ -105,15 +118,9 @@ project(':hydrogen.engine') {
 		provided 'org.vert-x:vertx-lang-java:1.3.1.final'
 		testCompile 'org.vert-x:vertx-testframework:1.3.1.final'
 	}
-	task deploy(dependsOn: 'classes') {
-		copy {
+	task deploy(type: Copy) {
 			into "../mods/$mod_engine"
-			with jar
-		}
-		copy {
-			into "../mods/$mod_engine/lib"
-			from configurations.compile
-		}
+	    with jar
 	}
 }
 
@@ -124,12 +131,24 @@ project(':hydrogen.tools') {
 	}
 }
 
-task deploy(dependsOn: [
-	':hydrogen.server:deploy',
+task deployServer(dependsOn: [
+	':hydrogen.persistence:deploy',
+	':hydrogen.network:deploy',
 	':hydrogen.service:deploy',
-	':hydrogen.dashboard:deploy',
+	':hydrogen.server:deploy',
+	])
+
+task deployDashboard(dependsOn: [
+	':hydrogen.persistence:deploy',
+	':hydrogen.network:deploy',
 	':hydrogen.engine:deploy',
-	]);
+	':hydrogen.dashboard:deploy',
+	])
+
+task deploy(dependsOn: [
+	'deployServer',
+	'deployDashboard',
+	])
 
 /*
 task deployCleanUp() {
@@ -137,6 +156,8 @@ task deployCleanUp() {
 	file("mods/$mod_service").deleteDir()
 	file("mods/$mod_dashboard").deleteDir()
 	file("mods/$mod_engine").deleteDir()
+	file("mods/$mod_persistence").deleteDir()
+	file("mods/$mod_network").deleteDir()
 }
 */
 
@@ -231,9 +252,9 @@ task mongoDbCleanUp() {
 }
 */
 
-task mongoDbStart(dependsOn: [mongoDb2Start, mongoDb1Start, mongoDb0Start]);
+task mongoDbStart(dependsOn: [mongoDb2Start, mongoDb1Start, mongoDb0Start])
 
-task mongoDbStop(dependsOn: [mongoDb0Stop, mongoDb1Stop, mongoDb2Stop]);
+task mongoDbStop(dependsOn: [mongoDb0Stop, mongoDb1Stop, mongoDb2Stop])
 
 task setup(type: Exec, dependsOn: [':hydrogen.tools:assemble']) {
 	def proj = subprojects.find{ it.name == 'hydrogen.tools' }

@@ -1,11 +1,11 @@
 package cavani.endorfina.hydrogen.server.tests;
 
-import static cavani.endorfina.hydrogen.server.util.Constants.CONFIG_HOST;
-import static cavani.endorfina.hydrogen.server.util.Constants.CONFIG_PORT;
-import static cavani.endorfina.hydrogen.server.util.Constants.CONFIG_ROOT_FILE;
+import static cavani.endorfina.hydrogen.network.http.Constants.CONFIG_HOST;
+import static cavani.endorfina.hydrogen.network.http.Constants.CONFIG_PORT;
+import static cavani.endorfina.hydrogen.network.http.Constants.CONFIG_ROOT_FILE;
+import static cavani.endorfina.hydrogen.network.http.Constants.CONFIG_WEB_ROOT;
 import static cavani.endorfina.hydrogen.server.util.Constants.CONFIG_SERVICE_CONF;
 import static cavani.endorfina.hydrogen.server.util.Constants.CONFIG_SERVICE_MODULE;
-import static cavani.endorfina.hydrogen.server.util.Constants.CONFIG_WEB_ROOT;
 import static cavani.endorfina.hydrogen.server.util.Constants.NO_SERVICE;
 
 import java.io.ByteArrayOutputStream;

@@ -188,15 +188,21 @@ Outcome:
 	mods/vertx.mongo-persistor-v1.2.1/org/vertx/mods/*.class
 	mods/vertx.mongo-persistor-v1.2.1/lib/mongo-java-driver-2.9.2.jar
 	
+	(cavani.endorfina.hydrogen.persistence-v1.0)
+	mods/cavani.endorfina.hydrogen.persistence-v1.0/mod.json
+	mods/cavani.endorfina.hydrogen.persistence-v1.0/<package>/*.class
+
+	(cavani.endorfina.hydrogen.network-v1.0)
+	mods/cavani.endorfina.hydrogen.network-v1.0/mod.json
+	mods/cavani.endorfina.hydrogen.network-v1.0/<package>/*.class
+
 	(cavani.endorfina.hydrogen.service-v1.0)
 	mods/cavani.endorfina.hydrogen.service-v1.0/mod.json
 	mods/cavani.endorfina.hydrogen.service-v1.0/<package>/*.class
-	mods/cavani.endorfina.hydrogen.service-v1.0/lib/hydrogen.persistence-1.0.jar
 	
 	(cavani.endorfina.hydrogen.engine-v1.0)
 	mods/cavani.endorfina.hydrogen.engine-v1.0/mod.json
 	mods/cavani.endorfina.hydrogen.engine-v1.0/<package>/*.class
-	mods/cavani.endorfina.hydrogen.engine-v1.0/lib/hydrogen.persistence-1.0.jar
 	
 	(cavani.endorfina.hydrogen.server-v1.0)
 	mods/cavani.endorfina.hydrogen.server-v1.0/mod.json
@@ -353,4 +359,6 @@ Running:
 	hydrogen.dashboard/build/reports/tests/index.html
 	hydrogen.service/build/reports/tests/index.html
 	hydrogen.engine/build/reports/tests/index.html
+	hydrogen.network/build/reports/tests/index.html
 	hydrogen.persistence/build/reports/tests/index.html
+	

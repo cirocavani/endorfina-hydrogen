@@ -1,4 +1,4 @@
-package cavani.endorfina.hydrogen.dashboard.service;
+package cavani.endorfina.hydrogen.network.http;
 
 import java.util.Arrays;
 import java.util.List;
@@ -8,8 +8,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.vertx.java.core.json.JsonObject;
 
-import cavani.endorfina.hydrogen.dashboard.service.HttpService;
-import cavani.endorfina.hydrogen.dashboard.service.ServiceAdapter;
+import cavani.endorfina.hydrogen.network.http.HttpService;
+import cavani.endorfina.hydrogen.network.http.ServiceAdapter;
 
 public class HttpServiceTest
 {

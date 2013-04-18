@@ -1,4 +1,4 @@
-package cavani.endorfina.hydrogen.server.service;
+package cavani.endorfina.hydrogen.network.http;
 
 import java.util.List;
 import java.util.Map;

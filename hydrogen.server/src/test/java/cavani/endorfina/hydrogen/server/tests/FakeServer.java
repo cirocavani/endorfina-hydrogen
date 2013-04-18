@@ -1,6 +1,6 @@
 package cavani.endorfina.hydrogen.server.tests;
 
-import static cavani.endorfina.hydrogen.server.service.ServiceRegistry.TRACK_SERVICE_ADDRESS;
+import static cavani.endorfina.hydrogen.server.service.ServiceFactory.TRACK_SERVICE_ADDRESS;
 import static cavani.endorfina.hydrogen.server.tests.IntegrationTest.ITEM;
 import static cavani.endorfina.hydrogen.server.tests.IntegrationTest.SHARE;
 import static cavani.endorfina.hydrogen.server.tests.IntegrationTest.USER_ID;

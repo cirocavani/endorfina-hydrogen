@@ -1,4 +1,5 @@
 {
 	"main": "cavani.endorfina.hydrogen.engine.EngineModule",
-	"worker": true
+	"worker": true,
+	"includes": "cavani.endorfina.hydrogen.persistence-v1.0"	
 }

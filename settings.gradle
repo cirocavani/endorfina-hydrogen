@@ -1,1 +1,1 @@
-include 'hydrogen.persistence', 'hydrogen.server', 'hydrogen.service', 'hydrogen.dashboard', 'hydrogen.engine', 'hydrogen.tools'
+include 'hydrogen.persistence', 'hydrogen.network', 'hydrogen.server', 'hydrogen.service', 'hydrogen.dashboard', 'hydrogen.engine', 'hydrogen.tools'
