@@ -3,31 +3,30 @@ package cavani.endorfina.hydrogen.persistence.mongodb;
 import org.vertx.java.core.json.JsonObject;
 import org.vertx.java.deploy.Container;
 
-import cavani.endorfina.hydrogen.persistence.api.PersistorAdapter;
 import cavani.endorfina.hydrogen.persistence.api.PersistorManager;
 
 public class MongoDbManager implements PersistorManager
 {
 
-	public static final String CONFIG_MODULE = "mongoDbModule";
+	public static final String CONFIG_MODULE = "mongodb_module";
 
-	public static final String CONFIG_INSTANCES = "mongoDbInstances";
+	public static final String CONFIG_INSTANCES = "mongodb_instances";
 
-	public static final String CONFIG_ADDRESS = "mongoDbAddress";
+	public static final String CONFIG_ADDRESS = "mongodb_address";
 
-	public static final String CONFIG_HOST = "mongoDbHost";
+	public static final String CONFIG_HOST = "mongodb_host";
 
-	public static final String CONFIG_PORT = "mongoDbPort";
+	public static final String CONFIG_PORT = "mongodb_port";
 
-	public static final String CONFIG_DATABASE = "mongoDbDatabase";
+	public static final String CONFIG_DATABASE = "mongodb_database";
 
-	public static final String CONFIG_SECONDARY = "mongoDbSecondary";
+	public static final String CONFIG_SECONDARY = "mongodb_secondary";
 
-	public static final String CONFIG_AUTH = "mongoDbAuth";
+	public static final String CONFIG_AUTH = "mongodb_auth";
 
-	public static final String CONFIG_USERNAME = "mongoDbUsername";
+	public static final String CONFIG_USERNAME = "mongodb_username";
 
-	public static final String CONFIG_PASSWORD = "mongoDbPassword";
+	public static final String CONFIG_PASSWORD = "mongodb_password";
 
 	private static final String DEFAULT_MODULE = "vertx.mongo-persistor-v1.2.1";
 
@@ -44,12 +43,6 @@ public class MongoDbManager implements PersistorManager
 	private static final boolean DEFAULT_SECONDARY = false;
 
 	private static final boolean DEFAULT_AUTH = false;
-
-	@Override
-	public PersistorAdapter createAdapter()
-	{
-		return new MongoDbAdapter();
-	}
 
 	@Override
 	public String deploy(final Container container, final JsonObject config)

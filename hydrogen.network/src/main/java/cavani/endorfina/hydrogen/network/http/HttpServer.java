@@ -36,13 +36,9 @@ public abstract class HttpServer extends BusModBase
 	{
 		super.start();
 
-		logger.info("HttpServer starting...");
-
 		setup();
 
 		createHttpServer();
-
-		logger.info("HttpServer start done!");
 	}
 
 	protected abstract List<HttpService> services();

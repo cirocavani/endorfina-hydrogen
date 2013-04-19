@@ -1,6 +1,8 @@
 package cavani.endorfina.hydrogen.service.tests;
 
 import static cavani.endorfina.hydrogen.service.util.Constants.CONFIG_PERSISTENCE_TYPE;
+import static cavani.endorfina.hydrogen.service.util.Constants.CONFIG_SOURCE_ADDRESS;
+import static cavani.endorfina.hydrogen.service.util.Constants.CONFIG_STORAGE_ADDRESS;
 import static cavani.endorfina.hydrogen.service.util.Constants.TRACK_SERVICE_ADDRESS;
 
 import org.vertx.java.core.Handler;
@@ -13,6 +15,8 @@ import cavani.endorfina.hydrogen.service.util.Constants;
 
 public class IntegrationTest extends TestClientBase
 {
+
+	public static final String PERSISTOR_FAKE_ADDRESS = "persistor.fake";
 
 	public static final String ITEM1_ID = "1";
 
@@ -41,10 +45,14 @@ public class IntegrationTest extends TestClientBase
 	{
 		super.start();
 
+		container.deployWorkerVerticle(FakeService.class.getName(), 1);
+
 		final JsonObject config = new JsonObject();
 		config.putString(CONFIG_PERSISTENCE_TYPE, "none");
+		config.putString(CONFIG_STORAGE_ADDRESS, PERSISTOR_FAKE_ADDRESS);
+		config.putString(CONFIG_SOURCE_ADDRESS, PERSISTOR_FAKE_ADDRESS);
 
-		container.deployWorkerVerticle(FakeService.class.getName(), config, 1, new Handler<String>()
+		container.deployWorkerVerticle(FakeTrack.class.getName(), config, 1, new Handler<String>()
 		{
 
 			@Override

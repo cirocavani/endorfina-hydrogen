@@ -1,18 +1,17 @@
 package cavani.endorfina.hydrogen.persistence.api;
 
 import static cavani.endorfina.hydrogen.persistence.api.Constants.PERSISTENCE_TYPE_MONGODB;
+import cavani.endorfina.hydrogen.persistence.mongodb.MongoDbAdapter;
 
-import cavani.endorfina.hydrogen.persistence.mongodb.MongoDbManager;
-
-public class PersistorManagerFactory
+public class PersistorAdapterFactory
 {
 
-	public PersistorManager createPersistorManager(final String type)
+	public PersistorAdapter createPersistorAdapter(final String type)
 	{
 		switch (type)
 		{
 			case PERSISTENCE_TYPE_MONGODB:
-				return new MongoDbManager();
+				return new MongoDbAdapter();
 			default:
 				return null;
 		}

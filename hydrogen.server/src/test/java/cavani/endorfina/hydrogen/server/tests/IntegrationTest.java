@@ -4,6 +4,8 @@ import static cavani.endorfina.hydrogen.network.http.Constants.CONFIG_HOST;
 import static cavani.endorfina.hydrogen.network.http.Constants.CONFIG_PORT;
 import static cavani.endorfina.hydrogen.network.http.Constants.CONFIG_ROOT_FILE;
 import static cavani.endorfina.hydrogen.network.http.Constants.CONFIG_WEB_ROOT;
+import static cavani.endorfina.hydrogen.server.util.Constants.CONFIG_HTTP_CONF;
+import static cavani.endorfina.hydrogen.server.util.Constants.CONFIG_HTTP_INSTANCES;
 import static cavani.endorfina.hydrogen.server.util.Constants.CONFIG_SERVICE_CONF;
 import static cavani.endorfina.hydrogen.server.util.Constants.CONFIG_SERVICE_MODULE;
 import static cavani.endorfina.hydrogen.server.util.Constants.NO_SERVICE;
@@ -48,15 +50,21 @@ public class IntegrationTest extends TestClientBase
 	{
 		super.start();
 
+		final JsonObject http = new JsonObject();
+
+		http.putString(CONFIG_HOST, HOST);
+		http.putNumber(CONFIG_PORT, PORT);
+		http.putString(CONFIG_WEB_ROOT, WEB_ROOT);
+		http.putString(CONFIG_ROOT_FILE, ROOT_FILE);
+
 		final JsonObject config = new JsonObject();
+		config.putNumber(CONFIG_HTTP_INSTANCES, 1);
+		config.putObject(CONFIG_HTTP_CONF, http);
 		config.putString(CONFIG_SERVICE_MODULE, NO_SERVICE);
 		config.putObject(CONFIG_SERVICE_CONF, new JsonObject());
-		config.putString(CONFIG_HOST, HOST);
-		config.putNumber(CONFIG_PORT, PORT);
-		config.putString(CONFIG_WEB_ROOT, WEB_ROOT);
-		config.putString(CONFIG_ROOT_FILE, ROOT_FILE);
 
-		container.deployVerticle(FakeServer.class.getName(), config, 1, new Handler<String>()
+		container.deployVerticle(FakeModule.class.getName(), config, 1);
+		container.deployVerticle(FakeHttp.class.getName(), http, 1, new Handler<String>()
 		{
 
 			@Override

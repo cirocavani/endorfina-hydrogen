@@ -1,50 +1,57 @@
 package cavani.endorfina.hydrogen.engine;
 
+import static cavani.endorfina.hydrogen.engine.util.Constants.CONFIG_DATA_INSTANCES;
 import static cavani.endorfina.hydrogen.engine.util.Constants.CONFIG_PERSISTENCE_SOURCE_CONF;
 import static cavani.endorfina.hydrogen.engine.util.Constants.CONFIG_PERSISTENCE_TYPE;
-import static cavani.endorfina.hydrogen.engine.util.Constants.TOTALHOUR_HANDLER_ADDRESS;
-import static cavani.endorfina.hydrogen.engine.util.Constants.TOTALITEM_HANDLER_ADDRESS;
-import static cavani.endorfina.hydrogen.engine.util.Constants.TOTAL_HANDLER_ADDRESS;
+import static cavani.endorfina.hydrogen.engine.util.Constants.CONFIG_PERSISTOR_ADDRESS;
+import static cavani.endorfina.hydrogen.persistence.api.Constants.PERSISTENCE_TYPE_MONGODB;
 
 import org.vertx.java.busmods.BusModBase;
 import org.vertx.java.core.json.JsonObject;
 
-import cavani.endorfina.hydrogen.engine.data.DataTotalHandler;
-import cavani.endorfina.hydrogen.engine.data.DataTotalHourHandler;
-import cavani.endorfina.hydrogen.engine.data.DataTotalItemHandler;
-import cavani.endorfina.hydrogen.persistence.api.PersistorAdapter;
+import cavani.endorfina.hydrogen.engine.data.DataService;
 import cavani.endorfina.hydrogen.persistence.api.PersistorManager;
 import cavani.endorfina.hydrogen.persistence.api.PersistorManagerFactory;
 
 public class EngineModule extends BusModBase
 {
 
+	private static final int DEFAULT_DATA_INSTANCES = 10;
+
+	private static final String DEFAULT_PERSISTENCE_TYPE = PERSISTENCE_TYPE_MONGODB;
+
+	private int dataInstances;
+
 	private String persistenceType;
 
 	private JsonObject persistenceSourceConf;
 
+	protected void info(final String msg)
+	{
+		container.getLogger().info(msg);
+	}
+
 	@Override
 	public void start()
 	{
-		super.start();
+		info("Hydrogen Engine starting...");
 
-		logger.info("Engine starting...");
+		super.start();
 
 		setup();
 
 		final PersistorManager manager = createPersistorManager();
-
-		final PersistorAdapter persistorAdapter = manager.createAdapter();
 		final String persistorAddress = manager.deploy(container, persistenceSourceConf);
 
-		registerServices(persistorAddress, persistorAdapter);
+		deployDataService(persistorAddress);
 
-		logger.info("Engine start done!");
+		info("Hydrogen Engine start done!");
 	}
 
 	protected void setup()
 	{
-		persistenceType = getMandatoryStringConfig(CONFIG_PERSISTENCE_TYPE);
+		dataInstances = getOptionalIntConfig(CONFIG_DATA_INSTANCES, DEFAULT_DATA_INSTANCES);
+		persistenceType = getOptionalStringConfig(CONFIG_PERSISTENCE_TYPE, DEFAULT_PERSISTENCE_TYPE);
 		persistenceSourceConf = getOptionalObjectConfig(CONFIG_PERSISTENCE_SOURCE_CONF, new JsonObject());
 	}
 
@@ -54,11 +61,13 @@ public class EngineModule extends BusModBase
 		return factory.createPersistorManager(persistenceType);
 	}
 
-	protected void registerServices(final String persistorAddress, final PersistorAdapter persistorAdapter)
+	protected void deployDataService(final String persistorAddress)
 	{
-		eb.registerHandler(TOTAL_HANDLER_ADDRESS, new DataTotalHandler(eb, persistorAddress, persistorAdapter));
-		eb.registerHandler(TOTALHOUR_HANDLER_ADDRESS, new DataTotalHourHandler(eb, persistorAddress, persistorAdapter));
-		eb.registerHandler(TOTALITEM_HANDLER_ADDRESS, new DataTotalItemHandler(eb, persistorAddress, persistorAdapter));
+		final JsonObject conf = new JsonObject();
+		conf.putString(CONFIG_PERSISTENCE_TYPE, persistenceType);
+		conf.putString(CONFIG_PERSISTOR_ADDRESS, persistorAddress);
+
+		container.deployWorkerVerticle(DataService.class.getName(), conf, dataInstances);
 	}
 
 }

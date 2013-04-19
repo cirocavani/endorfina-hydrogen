@@ -1,5 +1,5 @@
 {
-	"main": "cavani.endorfina.hydrogen.dashboard.Server",
+	"main": "cavani.endorfina.hydrogen.dashboard.Main",
 	"preserve-cwd": true,
 	"includes":"cavani.endorfina.hydrogen.network-v1.0"
 }

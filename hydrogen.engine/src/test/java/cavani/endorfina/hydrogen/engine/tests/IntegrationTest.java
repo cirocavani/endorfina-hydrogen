@@ -1,6 +1,7 @@
 package cavani.endorfina.hydrogen.engine.tests;
 
 import static cavani.endorfina.hydrogen.engine.util.Constants.CONFIG_PERSISTENCE_TYPE;
+import static cavani.endorfina.hydrogen.engine.util.Constants.CONFIG_PERSISTOR_ADDRESS;
 import static cavani.endorfina.hydrogen.engine.util.Constants.TOTALHOUR_HANDLER_ADDRESS;
 import static cavani.endorfina.hydrogen.engine.util.Constants.TOTALITEM_HANDLER_ADDRESS;
 import static cavani.endorfina.hydrogen.engine.util.Constants.TOTAL_HANDLER_ADDRESS;
@@ -15,6 +16,8 @@ import cavani.endorfina.hydrogen.engine.util.Constants;
 
 public class IntegrationTest extends TestClientBase
 {
+
+	public static final String PERSISTOR_FAKE_ADDRESS = "persistor.fake";
 
 	public static final String ITEM2_ID = "2";
 
@@ -41,10 +44,13 @@ public class IntegrationTest extends TestClientBase
 	{
 		super.start();
 
+		container.deployWorkerVerticle(FakeEngine.class.getName(), 1);
+
 		final JsonObject config = new JsonObject();
 		config.putString(CONFIG_PERSISTENCE_TYPE, "none");
+		config.putString(CONFIG_PERSISTOR_ADDRESS, PERSISTOR_FAKE_ADDRESS);
 
-		container.deployWorkerVerticle(FakeEngine.class.getName(), config, 1, new Handler<String>()
+		container.deployWorkerVerticle(FakeData.class.getName(), config, 1, new Handler<String>()
 		{
 
 			@Override

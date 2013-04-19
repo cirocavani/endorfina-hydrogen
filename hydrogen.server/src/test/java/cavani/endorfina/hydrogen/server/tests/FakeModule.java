@@ -9,10 +9,10 @@ import org.vertx.java.core.Handler;
 import org.vertx.java.core.eventbus.Message;
 import org.vertx.java.core.json.JsonObject;
 
-import cavani.endorfina.hydrogen.server.Server;
+import cavani.endorfina.hydrogen.server.Main;
 import cavani.endorfina.hydrogen.server.util.Constants;
 
-public class FakeServer extends Server
+public class FakeModule extends Main
 {
 
 	boolean test(final String field, final String expected, final String actual)
@@ -26,7 +26,7 @@ public class FakeServer extends Server
 	}
 
 	@Override
-	protected void deployModules()
+	protected void deployService()
 	{
 		eb.registerHandler(TRACK_SERVICE_ADDRESS, new Handler<Message<JsonObject>>()
 		{
@@ -34,8 +34,7 @@ public class FakeServer extends Server
 			@Override
 			public void handle(final Message<JsonObject> message)
 			{
-				if (test("Track.userId", USER_ID, message.body.getString(Constants.PARAM_ID))
-					&& test("Track.item", ITEM, message.body.getString(Constants.PARAM_ITEM)))
+				if (test("Track.userId", USER_ID, message.body.getString(Constants.PARAM_ID)) && test("Track.item", ITEM, message.body.getString(Constants.PARAM_ITEM)))
 				{
 					message.reply(new JsonObject(SHARE));
 				}
@@ -46,6 +45,12 @@ public class FakeServer extends Server
 			};
 
 		});
+	}
+
+	@Override
+	protected void deployHttpServer()
+	{
+		// no op - see IntegrationTest class
 	}
 
 }

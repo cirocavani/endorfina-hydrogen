@@ -2,6 +2,8 @@ package cavani.endorfina.hydrogen.dashboard.tests;
 
 import static cavani.endorfina.hydrogen.dashboard.util.Constants.CONFIG_ENGINE_CONF;
 import static cavani.endorfina.hydrogen.dashboard.util.Constants.CONFIG_ENGINE_MODULE;
+import static cavani.endorfina.hydrogen.dashboard.util.Constants.CONFIG_HTTP_CONF;
+import static cavani.endorfina.hydrogen.dashboard.util.Constants.CONFIG_HTTP_INSTANCES;
 import static cavani.endorfina.hydrogen.dashboard.util.Constants.NO_ENGINE;
 import static cavani.endorfina.hydrogen.network.http.Constants.CONFIG_HOST;
 import static cavani.endorfina.hydrogen.network.http.Constants.CONFIG_PORT;
@@ -52,15 +54,21 @@ public class IntegrationTest extends TestClientBase
 	{
 		super.start();
 
+		final JsonObject http = new JsonObject();
+
+		http.putString(CONFIG_HOST, HOST);
+		http.putNumber(CONFIG_PORT, PORT);
+		http.putString(CONFIG_WEB_ROOT, WEB_ROOT);
+		http.putString(CONFIG_ROOT_FILE, ROOT_FILE);
+
 		final JsonObject config = new JsonObject();
+		config.putNumber(CONFIG_HTTP_INSTANCES, 1);
+		config.putObject(CONFIG_HTTP_CONF, http);
 		config.putString(CONFIG_ENGINE_MODULE, NO_ENGINE);
 		config.putObject(CONFIG_ENGINE_CONF, new JsonObject());
-		config.putString(CONFIG_HOST, HOST);
-		config.putNumber(CONFIG_PORT, PORT);
-		config.putString(CONFIG_WEB_ROOT, WEB_ROOT);
-		config.putString(CONFIG_ROOT_FILE, ROOT_FILE);
 
-		container.deployVerticle(FakeServer.class.getName(), config, 1, new Handler<String>()
+		container.deployVerticle(FakeModule.class.getName(), config, 1);
+		container.deployVerticle(FakeHttp.class.getName(), http, 1, new Handler<String>()
 		{
 
 			@Override

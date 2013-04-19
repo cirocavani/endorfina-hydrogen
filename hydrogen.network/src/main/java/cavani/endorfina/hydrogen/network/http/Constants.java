@@ -7,9 +7,9 @@ public final class Constants
 
 	public static final String CONFIG_PORT = "port";
 
-	public static final String CONFIG_WEB_ROOT = "webRoot";
+	public static final String CONFIG_WEB_ROOT = "web_root";
 
-	public static final String CONFIG_ROOT_FILE = "rootFile";
+	public static final String CONFIG_ROOT_FILE = "root_file";
 
 	private Constants()
 	{

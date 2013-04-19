@@ -258,37 +258,41 @@ Modules:
 Configuration `hydrogen/conf/server.conf`:
 
 	{
-	  "host": "127.0.0.1",
-	  "port": 8080,
-	  "webRoot": "web/server",
-	  "rootFile": "index.html",
-	  "serviceConf": {
-	    "persistenceType": "MongoDB",
-	    "persistenceStorageConf": {
-	      "mongoDbModule": "vertx.mongo-persistor-v1.2.1",
-	      "mongoDbInstances": 10,
-	      "mongoDbAddress": "persistence.storage.mongodb",
-	      "mongoDbHost": "127.0.0.1",
-	      "mongoDbPort": 27017,
-	      "mongoDbDatabase": "default_db",
-	      "mongoDbSecondary": false,
-	      "mongoDbAuth": false,
-	      "mongoDbUsername": "system",
-	      "mongoDbPassword": "secret"
-	    },
-	    "persistenceSourceConf": {
-	      "mongoDbModule": "vertx.mongo-persistor-v1.2.1",
-	      "mongoDbInstances": 10,
-	      "mongoDbAddress": "persistence.source.mongodb",
-	      "mongoDbHost": "127.0.0.1",
-	      "mongoDbPort": 27018,
-	      "mongoDbDatabase": "default_db",
-	      "mongoDbSecondary": true,
-	      "mongoDbAuth": false,
-	      "mongoDbUsername": "system",
-	      "mongoDbPassword": "secret"
-	    }
-	  }
+		"http_instances": 10,
+		"http_conf": {
+			"host": "127.0.0.1",
+			"port": 8080,
+			"web_root": "web/server/",
+			"root_file": "index.html"
+		},
+		"service_conf": {
+			"track_instances": 10,
+			"persistence_type": "MongoDB",
+			"persistence_storage_conf": {
+				"mongodb_module": "vertx.mongo-persistor-v1.2.1",
+				"mongodb_instances": 10,
+				"mongodb_address": "persistence.storage.mongodb",
+				"mongodb_host": "127.0.0.1",
+				"mongodb_port": 27017,
+				"mongodb_database": "default_db",
+				"mongodb_secondary": false,
+				"mongodb_auth": false,
+				"mongodb_username": "system",
+				"mongodb_password": "secret"
+			},
+			"persistence_source_conf": {
+				"mongodb_module": "vertx.mongo-persistor-v1.2.1",
+				"mongodb_instances": 10,
+				"mongodb_address": "persistence.source.mongodb",
+				"mongodb_host": "127.0.0.1",
+				"mongodb_port": 27018,
+				"mongodb_database": "default_db",
+				"mongodb_secondary": true,
+				"mongodb_auth": false,
+				"mongodb_pusername": "system",
+				"mongodb_password": "secret"
+			}
+		}
 	}
 
 Static files folder `hydrogen/web/server`:
@@ -315,25 +319,29 @@ Modules:
 Configuration `hydrogen/conf/dash.conf`:
 
 	{
-	  "host": "127.0.0.1",
-	  "port": 8080,
-	  "webRoot": "web/dash/",
-	  "rootFile": "index.html",
-	  "engineConf": {
-	    "persistenceType": "MongoDB",
-	    "persistenceSourceConf": {
-	      "mongoDbModule": "vertx.mongo-persistor-v1.2.1",
-	      "mongoDbInstances": 10,
-	      "mongoDbAddress": "persistence.source.mongodb",
-	      "mongoDbHost": "127.0.0.1",
-	      "mongoDbPort": 27019,
-	      "mongoDbDatabase": "default_db",
-	      "mongoDbSecondary": true,
-	      "mongoDbAuth": false,
-	      "mongoDbUsername": "system",
-	      "mongoDbPassword": "secret"
-	    }
-	  }
+		"http_instances": 10,
+		"http_conf": {
+			"host": "127.0.0.1",
+			"port": 8180,
+			"web_root": "web/dash/",
+			"root_file": "index.html"
+		},
+		"engine_conf": {
+			"data_instances": 10,
+			"persistence_type": "MongoDB",
+			"persistence_source_conf": {
+				"mongodb_module": "vertx.mongo-persistor-v1.2.1",
+				"mongodb_instances": 10,
+				"mongodb_address": "persistence.source.mongodb",
+				"mongodb_host": "127.0.0.1",
+				"mongodb_port": 27019,
+				"mongodb_database": "default_db",
+				"mongodb_secondary": true,
+				"mongodb_auth": false,
+				"mongodb_username": "system",
+				"mongodb_password": "secret"
+			}
+		}
 	}
 
 Static files folder `hydrogen/web/dash`:

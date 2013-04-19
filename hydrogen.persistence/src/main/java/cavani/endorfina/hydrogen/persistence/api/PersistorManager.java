@@ -6,8 +6,6 @@ import org.vertx.java.deploy.Container;
 public interface PersistorManager
 {
 
-	PersistorAdapter createAdapter();
-
 	String deploy(Container conteiner, JsonObject config);
 
 }

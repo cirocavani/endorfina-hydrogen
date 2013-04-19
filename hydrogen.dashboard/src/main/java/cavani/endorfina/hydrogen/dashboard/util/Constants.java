@@ -3,9 +3,13 @@ package cavani.endorfina.hydrogen.dashboard.util;
 public final class Constants
 {
 
-	public static final String CONFIG_ENGINE_MODULE = "engineModule";
+	public static final String CONFIG_HTTP_INSTANCES = "http_instances";
 
-	public static final String CONFIG_ENGINE_CONF = "engineConf";
+	public static final String CONFIG_HTTP_CONF = "http_conf";
+
+	public static final String CONFIG_ENGINE_MODULE = "engine_module";
+
+	public static final String CONFIG_ENGINE_CONF = "engine_conf";
 
 	public static final String NO_ENGINE = "noengine";
 
